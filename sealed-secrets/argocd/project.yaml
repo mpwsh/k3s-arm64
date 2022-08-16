@@ -1,23 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: redis
+  name: tooling
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: Redis Server
+  description: kubernetes tooling applications
   # Allow manifests to deploy from any Git repos
   sourceRepos:
   - '*'
   # Only permit applications to deploy to the marketplace namespace in the same cluster
   destinations:
-  - namespace: redis
+  - namespace: tooling
     server: https://kubernetes.default.svc
-  # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
   - group: ''
     kind: Namespace
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
   - group: ''
@@ -28,7 +33,11 @@ spec:
     kind: NetworkPolicy
   namespaceResourceWhitelist:
   - group: ''
-    kind: ConfigMap
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io
+    kind: RoleBinding
+  - group: rbac.authorization.k8s.io
+    kind: Role
   - group: ''
     kind: Service
   - group: apps
@@ -45,15 +54,12 @@ spec:
     kind: CronJob
   - group: ''
     kind: PersistentVolumeClaim
-  - group: ''
-    kind: Namespace
-
 
   roles:
   # A role which provides read-only access to all applications in the project
   - name: read-only
-    description: Read-only privileges to redis
+    description: Read-only privileges to tooling
     policies:
-    - p, proj:redis:read-only, applications, get, redis/*, allow
+    - p, proj:tooling:read-only, applications, get, tooling/*, allow
     groups:
     - readonly-oidc-group
