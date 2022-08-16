@@ -10,13 +10,14 @@ spec:
     repoURL: https://bitnami-labs.github.io/sealed-secrets
     targetRevision: 1.16.1
     helm:
+      releaseName: sealed-secrets
       parameters:
       - name: image.tag
         value: v0.18.1
       - name: image.repository
         value: bitnami/sealed-secrets-controller
-    helm:
-      releaseName: sealed-secrets
+      - name: namespace
+        value: tooling
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
