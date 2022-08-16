@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: tooling
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: kubernetes tooling applications
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - '*'
+  # Only permit applications to deploy to the marketplace namespace in the same cluster
+  destinations:
+  - namespace: tooling
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
+  namespaceResourceBlacklist:
+  - group: ''
+    kind: ResourceQuota
+  - group: ''
+    kind: LimitRange
+  - group: ''
+    kind: NetworkPolicy
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io
+    kind: RoleBinding
+  - group: rbac.authorization.k8s.io
+    kind: Role
+  - group: ''
+    kind: Service
+  - group: apps
+    kind: Deployment
+  - group: apps
+    kind: StatefulSet
+  - group: keda.sh
+    kind: TriggerAuthentication
+  - group: keda.sh
+    kind: ScaledObject
+  - group: networking.k8s.io
+    kind: Ingress
+  - group: batch
+    kind: CronJob
+  - group: ''
+    kind: PersistentVolumeClaim
+
+  roles:
+  # A role which provides read-only access to all applications in the project
+  - name: read-only
+    description: Read-only privileges to tooling
+    policies:
+    - p, proj:tooling:read-only, applications, get, tooling/*, allow
+    groups:
+    - readonly-oidc-group

@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reloader
+  namespace: argocd
+spec:
+  project: tooling
+  source:
+    repoURL: https://github.com/stakater/Reloader.git
+    targetRevision: HEAD
+    path: deployments/kubernetes
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: tooling
