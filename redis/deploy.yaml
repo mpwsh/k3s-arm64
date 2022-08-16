@@ -14,8 +14,6 @@ spec:
         app: redis-server
         name: redis-server
     spec:
-      nodeSelector:
-        node-type: worker
       containers:
       - name: redis-server
         image: redis
