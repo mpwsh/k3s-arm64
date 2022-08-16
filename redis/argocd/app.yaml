@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis
+  namespace: argocd
+spec:
+  project: redis
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: redis
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: redis
