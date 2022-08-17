@@ -81,17 +81,12 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     external-dns.alpha.kubernetes.io/hostname: nav.mpw.sh
-  hosts:
-    - host: nav.mpw.sh
-      http:
-        paths:
-          - pathType: Prefix
-            backend:
-              service:
-                name: kubenav
-                port:
-                  number: 14122
-            path: /
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+  rules:
+    hosts:
+      - host: nav.mpw.sh
   tls:
     - secretName: kubenav-tls
       hosts:
