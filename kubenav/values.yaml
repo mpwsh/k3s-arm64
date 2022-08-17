@@ -83,6 +83,15 @@ ingress:
     external-dns.alpha.kubernetes.io/hostname: nav.mpw.sh
   hosts:
     - host: nav.mpw.sh
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: kubenav
+                port:
+                  number: 14122
+            path: /
   tls:
     - secretName: kubenav-tls
       hosts:
