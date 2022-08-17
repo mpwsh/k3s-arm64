@@ -83,7 +83,7 @@ ingress:
     external-dns.alpha.kubernetes.io/hostname: nav.mpw.sh
   hosts:
     - host: nav.mpw.sh
-  tls: []
+  tls:
     - secretName: kubenav-tls
       hosts:
         - nav.mpw.sh
