@@ -1,19 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: reloader
+  name: kubenav
   namespace: argocd
 spec:
   project: tooling
   source:
-    chart: reloader
-    repoURL: https://stakater.github.io/stakater-charts
-    targetRevision: 0.0.118
+    chart: kubenav
+    repoURL: https://kubenav.github.io/helm-repository
+    targetRevision: 1.2.0
     helm:
-      releaseName: reloader
+      releaseName: kubenav
+      valueFiles:
+      - values.yaml
       parameters:
-      - name: namespace
-        value: tooling
+      - name: ingress.enabled
+        value: "true"
+      - name: ingress.ingressClassName
+        value: nginx
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
