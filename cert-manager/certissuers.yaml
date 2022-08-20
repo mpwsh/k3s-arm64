@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-cert-issuers
+  namespace: argocd
+spec:
+  project: cluster-cert-issuers
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: cert-manager/cert-issuers
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
