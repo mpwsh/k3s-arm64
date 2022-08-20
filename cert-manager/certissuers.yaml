@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     targetRevision: main
-    path: cert-manager/cert-issuers
+    path: cert-manager/cluster-issuers
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
