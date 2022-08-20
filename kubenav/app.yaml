@@ -9,6 +9,7 @@ spec:
     chart: kubenav
     repoURL: https://kubenav.github.io/helm-repository
     targetRevision: 1.2.0
+    path: kubenav
     helm:
       releaseName: kubenav
       valueFiles:
