@@ -8,12 +8,13 @@ spec:
   source:
     chart: kubenav
     repoURL: https://kubenav.github.io/helm-repository
-    targetRevision: 1.2.0
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
     path: kubenav
+    targetRevision: main
     helm:
       releaseName: kubenav
-      valueFiles:
-      - values.yaml
+      valuesFile:
+        - values.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
