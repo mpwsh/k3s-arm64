@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: conduit
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: mpw.sh
+    external-dns.alpha.kubernetes.io/ttl: "120"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /.well-known/matrix/server {
+        return 200 '{"m.server": "mpw.sh:443"}';
+        add_header Content-Type application/json;
+      }
+      location /.well-known/matrix/client {
+        return 200 '{"m.homeserver": {"base_url": "https://mpw.sh"},"m.identity_server": {"base_url": "https://vector.im"}}';
+        add_header Content-Type application/json;
+        add_header "Access-Control-Allow-Origin" *;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: mpw.sh
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: federation
+                port:
+                  number: 6167
+            path: /_matrix
+  tls:
+    - hosts:
+      - mpw.sh
+      secretName: conduit-tls
