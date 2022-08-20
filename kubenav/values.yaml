@@ -1,3 +1,80 @@
+# Default values for kubenav.
+
+replicaCount: 1
+
+image:
+  repository: kubenav/kubenav
+  tag: 3.7.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+deployment:
+  # Specifies whether kubenav should in the incluster mode or with a mounted Kubeconfig.
+  # This must be "incluster" or "kubeconfig"
+  mode: incluster
+  # When the "kubeconfig" mode is used the kubeconfig value must contain a base64 encoded Kubeconfig file.
+  kubeconfig:
+
+plugins:
+  # Settings for the Prometheus plugin: https://docs.kubenav.io/plugins/prometheus/
+  prometheus:
+    enabled: false
+    address: "http://prometheus.monitoring.svc.cluster.local:9090"
+    username: ""
+    password: ""
+    dashboardsNamespace: kubenav
+  # Settings for the Elasticsearch plugin: https://docs.kubenav.io/plugins/elasticsearch/
+  elasticsearch:
+    enabled: false
+    address: "http://elasticsearch.logging.svc.cluster.local:9200"
+    username: ""
+    password: ""
+  # Settings for the Jaeger plugin: https://docs.kubenav.io/plugins/jaeger/
+  jaeger:
+    enabled: false
+    address: "http://jaeger-query.tracing.svc.cluster.local:16686"
+    username: ""
+    password: ""
+
+rbac:
+  # Specifies whether a cluster role and cluster role binding should be created.
+  create: true
+  # The name of the cluster role and cluster role binding to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name:
+  # Specifies the rights the kubenav service account gets.
+  # This must be "admin" or "viewer".
+  role: admin
+
+serviceAccount:
+  # Specifies whether a service account should be created.
+  create: true
+  # Annotations to add to the service account.
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name:
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 14122
+
 ingress:
   enabled: true
   ingressClassName: nginx
@@ -17,3 +94,22 @@ ingress:
     - secretName: kubenav-tls
       hosts:
         - nav.mpw.sh
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
