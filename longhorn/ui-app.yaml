@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     targetRevision: main
-    path: longhorn
+    path: longhorn/ingress
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
