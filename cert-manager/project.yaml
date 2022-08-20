@@ -28,7 +28,7 @@ spec:
     kind: ValidatingWebhookConfiguration
   - group: admissionregistration.k8s.io
     kind: MutatingWebhookConfiguration
-  - group: cert-manager.io/v1
+  - group: cert-manager.io
     kind: ClusterIssuer
     # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
