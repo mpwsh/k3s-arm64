@@ -13,11 +13,6 @@ spec:
       releaseName: kubenav
       valueFiles:
       - values.yaml
-      parameters:
-      - name: ingress.enabled
-        value: "true"
-      - name: ingress.ingressClassName
-        value: nginx
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
