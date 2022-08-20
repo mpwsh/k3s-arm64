@@ -1,0 +1,32 @@
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  host: lh.mpw.sh
+  ## Set this to true in order to enable TLS on the ingress record
+  tls: true
+  ## Enable this in order to enable that the backend service will be connected at port 443
+  secureBackends: false
+  ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
+  tlsSecret: longhorn-tls
+
+  ## If ingress is enabled you can set the default ingress path
+  ## then you can access the UI by using the following full path {{host}}+{{path}}
+  path: /
+
+  ## Ingress annotations done as key:value pairs
+  ## If you're using kube-lego, you will want to add:
+  ## kubernetes.io/tls-acme: true
+  ##
+  ## For a full list of possible ingress annotations, please see
+  ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/annotations.md
+  ##
+  ## If tls is set to true, annotation ingress.kubernetes.io/secure-backends: "true" will automatically be set
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: lh.mpw.sh
+    external-dns.alpha.kubernetes.io/target: k3s.mpw.sh
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
