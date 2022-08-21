@@ -53,11 +53,13 @@ spec:
   - group: apps
     kind: Deployment
   - group: apps
-    kind: DaemonSet
+    kind: StatefulSet
   - group: networking.k8s.io
     kind: Ingress
   - group: batch
     kind: Job
+  - group: ''
+    kind: PersistentVolumeClaim
 
   roles:
   # A role which provides read-only access to all applications in the project

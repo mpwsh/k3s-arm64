@@ -36,8 +36,8 @@ vaultwarden:
     auth:
       existingSecret: postgres-creds
       secretKeys:
-        adminPasswordKey: "admin_pw"
-        userPasswordKey: "user_pw"
+        adminPasswordKey: admin
+        userPasswordKey: user
       postgresqlDatabase: bitwarden
       postgresqlUsername: mpw
   service:
