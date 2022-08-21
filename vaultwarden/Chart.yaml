@@ -4,5 +4,5 @@ type: application
 version: 1.0.0
 dependencies:
   - name: vaultwarden
-    version: 1.25.2
+    version: 5.3.2
     repository: https://k8s-at-home.com/charts
