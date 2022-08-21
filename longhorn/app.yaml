@@ -6,16 +6,13 @@ metadata:
 spec:
   project: longhorn
   source:
-    chart: longhorn
-    repoURL: https://charts.longhorn.io
-    targetRevision: v1.3.1
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    path: longhorn
+    targetRevision: HEAD
     helm:
       releaseName: longhorn
       valueFiles:
       - values.yaml
-      parameters:
-      - name: ingress.host
-        value: lh.mpw.sh
   destination:
     server: "https://kubernetes.default.svc"
     namespace: longhorn-system
