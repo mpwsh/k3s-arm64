@@ -8,6 +8,7 @@ vaultwarden:
         external-dns.alpha.kubernetes.io/target: k3s.mpw.sh
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         external-dns.alpha.kubernetes.io/ttl: "60"
+      ingressClassName: nginx
       hosts:
       - host: bw.mpw.sh
         paths:
