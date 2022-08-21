@@ -45,8 +45,6 @@ spec:
     kind: CronJob
   - group: ''
     kind: PersistentVolumeClaim
-  - group: ''
-    kind: Namespace
 
 
   roles:
