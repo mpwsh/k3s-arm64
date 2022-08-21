@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vaultwarden
+  namespace: argocd
+spec:
+  project: tooling
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    path: vaultwarden
+    targetRevision: HEAD
+    helm:
+      releaseName: vaultwarden
+      valueFiles:
+      - values.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: tooling
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
