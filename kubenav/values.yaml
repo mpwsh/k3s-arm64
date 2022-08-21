@@ -11,8 +11,12 @@ kubenav:
       nginx.ingress.kubernetes.io/auth-type: basic
       nginx.ingress.kubernetes.io/auth-secret: basic-auth
       nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
-    hosts:
-      - host: nav.mpw.sh
+    rules:
+      hosts:
+        - host: nav.mpw.sh
+          http:
+            paths:
+              - path: /
     tls:
       - secretName: kubenav-tls
         hosts:
