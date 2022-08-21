@@ -4,7 +4,7 @@ metadata:
   name: vaultwarden
   namespace: argocd
 spec:
-  project: tooling
+  project: vaultwarden
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     path: vaultwarden
@@ -15,7 +15,7 @@ spec:
       - values.yaml
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: tooling
+    namespace: vaultwarden
   syncPolicy:
     automated:
       prune: true
