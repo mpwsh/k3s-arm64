@@ -6,13 +6,13 @@ metadata:
 spec:
   project: cert-manager
   source:
-    chart: cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: 1.9.1
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: cert-manager
     helm:
       releaseName: cert-manager
       parameters:
-      - name: installCRDs
+      - name: cert-manager.installCRDs
         value: "true"
   destination:
     server: "https://kubernetes.default.svc"
