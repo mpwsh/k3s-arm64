@@ -29,7 +29,7 @@ vaultwarden:
             port: 3012
   persistence:
     config:
-      enabled: false
+      enabled: true
       type: PersistentVolumeClaim
   postgresql:
     enabled: true
