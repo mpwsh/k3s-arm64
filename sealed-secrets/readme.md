@@ -1,3 +1,12 @@
+### TL;DR:
+```bash
+#Sealing a secret
+secret_name=cloudflare-creds
+ kubectl create secret generic $secret_name --dry-run=client --from-literal=token=<token> -o json \
+ | kubeseal --controller-namespace sealed-secrets --controller-name=sealed-secrets-controller \
+ > sealed-$secret_name.json
+```
+
 Instructions from [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) repository.
 
 ### Usage
@@ -15,7 +24,10 @@ echo -n bar | kubectl create secret generic mysecret --dry-run=client --from-fil
 
 # This is the important bit:
 # (note default format is json!)
-kubeseal --controller-namespace tooling --controller-name=sealed-secrets -n tooling <mysecret.json >mysealedsecret.json
+kubeseal <mysecret.json >mysealedsecret.json
+#kubeseal --controller-namespace sealed-secrets --controller-name=sealed-secrets-controller <mysecret.json >mysealedsecret.json
+#Use this if kubeseal is in another namespace, or didnt deploy with FullNameOverride.
+#kubeseal --controller-namespace tooling --controller-name=sealed-secrets -n tooling <mysecret.json >mysealedsecret.json
 
 # mysealedsecret.json is safe to upload to github, post to twitter,
 # etc.  Eventually:

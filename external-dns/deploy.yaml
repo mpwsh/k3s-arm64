@@ -36,7 +36,7 @@ kind: Deployment
 metadata:
   name: external-dns
   annotations:
-      reloader.stakater.com/auto: "true"
+    reloader.stakater.com/auto: "true"
 spec:
   strategy:
     type: Recreate

@@ -1,4 +1,7 @@
 vaultwarden:
+  env:
+    #/data
+    DATA_FOLDER: data
   ingress:
     main:
       enabled: true
@@ -26,7 +29,8 @@ vaultwarden:
             port: 3012
   persistence:
     config:
-      enabled: true
+      enabled: false
+      type: PersistentVolumeClaim
   postgresql:
     enabled: true
     image:

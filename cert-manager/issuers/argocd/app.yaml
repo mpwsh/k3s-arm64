@@ -1,21 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: cert-issuers
   namespace: argocd
 spec:
   project: cert-manager
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     targetRevision: main
-    path: cert-manager
-    helm:
-      releaseName: cert-manager
-      parameters:
-      - name: cert-manager.installCRDs
-        value: "true"
+    path: cert-manager/issuers
   destination:
-    server: "https://kubernetes.default.svc"
+    server: https://kubernetes.default.svc
     namespace: cert-manager
   syncPolicy:
     automated:
