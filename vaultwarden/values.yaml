@@ -29,7 +29,6 @@ vaultwarden:
   persistence:
     config:
       enabled: true
-      type: PersistentVolumeClaim
   postgresql:
     enabled: false
     image:
