@@ -1,7 +1,6 @@
 vaultwarden:
   env:
-    #/data
-    DATA_FOLDER: data
+    DATA_FOLDER: config
   ingress:
     main:
       enabled: true
