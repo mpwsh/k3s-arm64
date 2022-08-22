@@ -32,7 +32,7 @@ vaultwarden:
       enabled: true
       type: PersistentVolumeClaim
   postgresql:
-    enabled: true
+    enabled: false
     image:
       registry: docker.io
       repository: arm64v8/postgres
