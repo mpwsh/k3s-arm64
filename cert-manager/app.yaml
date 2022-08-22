@@ -9,6 +9,8 @@ spec:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     targetRevision: main
     path: cert-manager
+    directory:
+      recursive: true
     helm:
       releaseName: cert-manager
       parameters:
