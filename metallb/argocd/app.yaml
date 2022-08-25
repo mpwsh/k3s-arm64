@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
     targetRevision: main
-    path: metalLB
+    path: metallb
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
@@ -16,6 +16,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  syncOptions:
+    syncOptions:
       - Validate=true
       - CreateNamespace=true
