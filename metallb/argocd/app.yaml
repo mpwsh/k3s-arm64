@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: metallb
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: metalLB
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  syncOptions:
+      - Validate=true
+      - CreateNamespace=true
