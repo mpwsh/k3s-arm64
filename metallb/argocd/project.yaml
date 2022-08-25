@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: ingress-nginx
+  name: metallb
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: ingress-nginx
+  description: metallb
   # Allow manifests to deploy from any Git repos
   sourceRepos:
   - '*'
   # Only permit applications to deploy to the marketplace namespace in the same cluster
   destinations:
-  - namespace: ingress-nginx
+  - namespace: metallb
     server: https://kubernetes.default.svc
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
@@ -57,8 +57,8 @@ spec:
   roles:
   # A role which provides read-only access to all applications in the project
   - name: read-only
-    description: Read-only privileges to ingress-nginx
+    description: Read-only privileges to metallb
     policies:
-    - p, proj:ingress-nginx:read-only, applications, get, ingress-nginx/*, allow
+    - p, proj:metallb:read-only, applications, get, metallb/*, allow
     groups:
     - readonly-oidc-group
