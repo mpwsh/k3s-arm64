@@ -26,6 +26,8 @@ spec:
     kind: CustomResourceDefinition
   - group: admissionregistration.k8s.io
     kind: ValidatingWebhookConfiguration
+  - group: policy
+    kind: PodSecurityPolicy
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
   - group: ''
