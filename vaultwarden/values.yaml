@@ -11,6 +11,9 @@ vaultwarden:
         external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         external-dns.alpha.kubernetes.io/ttl: "60"
       ingressClassName: nginx
+      tls:
+      - host: bw.mpw.sh
+        secretName: vaultwarden-tls
       hosts:
       - host: bw.mpw.sh
         paths:

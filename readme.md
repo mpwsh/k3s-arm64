@@ -56,7 +56,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://<lan-ip-of-your-master-node>:6443
 
 ### Nothing works. HELP
 I understand that this repo is not really documented (sorry). You can get a lot of valuable information and assistance online. k3s + raspberry pi is a very popular combo with multiple communities.
-The website [rpi4cluster.com](rpi4cluster.com/) is an awesome source of information to get a better understanding of the whole setup.
+The website [rpi4cluster.com](https://rpi4cluster.com/) is an awesome source of information to get a better understanding of the whole setup.
 
 Feel free to open an issue if you get stuck though, i'll do my best to help.
 
