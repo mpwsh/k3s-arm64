@@ -12,8 +12,9 @@ vaultwarden:
         external-dns.alpha.kubernetes.io/ttl: "60"
       ingressClassName: nginx
       tls:
-      - hosts: bw.mpw.sh
-        secretName: vaultwarden-tls
+      - secretName: vaultwarden-tls
+        hosts:
+          - bw.mpw.sh
       hosts:
       - host: bw.mpw.sh
         paths:
