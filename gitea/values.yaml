@@ -28,7 +28,7 @@ clusterDomain: k3s.mpw.sh
 ## @param image.pullPolicy Image pull policy
 ## @param image.rootless Wether or not to pull the rootless version of Gitea, only works on Gitea 1.14.x or higher
 image:
-  registry: ""
+  registry: docker.io
   repository: gitea/gitea
   # Overrides the image tag whose default is the chart appVersion.
   tag: 1.18-dev-linux-arm64-rootless
@@ -415,6 +415,11 @@ memcached:
 ## @param postgresql.persistence.size PVC Storage Request for PostgreSQL volume
 postgresql:
   enabled: true
+  image:
+    registry: docker.io
+    repository: arm64v8/postgres
+    tag: 14-alpine3.16
+
   global:
     postgresql:
       existing_secret: gitea-postgres-creds
