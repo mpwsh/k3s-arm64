@@ -398,6 +398,10 @@ gitea:
 ## @param memcached.service.port Port for Memcached
 memcached:
   enabled: true
+  image:
+    registry: docker.io
+    repository: arm64v8/memcached
+    tag: alpine3.16
   service:
     port: 11211
 
