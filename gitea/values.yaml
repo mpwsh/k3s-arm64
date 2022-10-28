@@ -7,7 +7,7 @@
 ## @param global.imagePullSecrets global image pull secrets override; can be extended by `imagePullSecrets`
 ## @param global.storageClass global storage class override
 global:
-  imageRegistry: ""
+  imageRegistry: docker.io
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName
@@ -418,7 +418,7 @@ postgresql:
   image:
     registry: docker.io
     repository: arm64v8/postgres
-    tag: 14-alpine3.16
+    tag: 14-bullseye
 
   global:
     postgresql:
