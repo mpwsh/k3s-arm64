@@ -1,0 +1,24 @@
+{
+  "kind": "SealedSecret",
+  "apiVersion": "bitnami.com/v1alpha1",
+  "metadata": {
+    "name": "gitea-postgres-creds",
+    "namespace": "gitea",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "name": "gitea-postgres-creds",
+        "namespace": "gitea",
+        "creationTimestamp": null
+      },
+      "data": null
+    },
+    "encryptedData": {
+      "postgresqlDatabase": "AgCRyjEE6DiwGeikt/iP/UcupOuqV/+QIA3wyTSo6KEIkqBKuKcVMLZVtzP0xcPdr/vYLS+WPfmk22pQSueYgo7taWeVoJDNYL3SNkkbDJMc5OOOHhkCTgUzMwUMzPHP3y27qKYwjElCQcA7a0YHLbXO3mhdjxUp9LScNCDbFf6CNJMVf/2ANlVeNhKWVZ5uv8mb1lr1PqRiWqz5Q8xilFIgM3u9GuKzotFQE7uKyvrSJZV5c1uookQJPwvs1+0oT1mkscRhRQEx3ceQgthO18dC/9diZThR+T8AtRNcieUv2HfFbIlAmWXHbktnj6/4yerfDvWNNUzs6vMn0gxZzmJxT9wYz2Z3eWXR1u97f6MmNBEZEdIexAgM6l42V8NSFCX6kdsiUaIi/5g7NSGxUB0tBNhPRUtYId7ijRmO9NLPbGb5qTxf7RLAi47yqR9fCzIJ0+HhEHesV8BWQU8tH3C+acTJ5UYXGAlx26ORP4CWjmMDCLCXN/v5NRE6e4cqBrgZGQzUUb6Ke99eOXFjgQ01rvWg2gFI+UrJ41ki7uvsQxvdEXQ9FWA8ZJuqWK6VX4wGWdl5MEKWmBcqAuY21u+JCDwAoInCSsPaI74wmj5nZGQSwhD+RTWDyRNMCgl7rSmKJsNZ4X5MoUBKva744RIZvdtHZAC1LN7A9q1KDmZS4RZmSFJhmABjNC797mNxDf0w6e6n+w==",
+      "postgresqlPassword": "AgAeHEXt61vDmS4ooy+oC9IJu6OuPS/3LxAndE6pF8rs/1UhIu8QKtfsigShH0jslacYT7GOCgIMK5Hrdc6B9mwj8bvbtwIvNI5BTWkwGri7LfqV1NoPXJIbgFd1B1dhR7TtwRaBqnZpXmPm2WBJnL3k/CRugaQkme2MVN97Rbpp9J0mKJZ6YT2Zwm6KkfGC+A5/xR8rNKH7Qv+eRjWV1v6wHSgrH4MNjGiKsfiJjVdJSZrwTvlXmI5dqI/RfVF4V5kQD6shfhzhfYRLjF5MWA40bfvtTDCXmlrPA9N0zjegaPpOZziu/qK1jxN1X1+CJx8hjtnl6tbhxuffI4i+sMteptj7+xNtMTnr6usdaz5rKSoJrI9dwkIcjDnRneN5hwaH3jP5+PoOhWIC4sQMkVny0A5Bn3eUpwkfn+Cld2CrRAP0e/y5YRbIFloc/U+A51qRKwptOFzBqzRmu1b6YTY7ArwaO3UdSouI0WV6WSLtJ90OJQx6Nju6y7MusGolwjdvyKh/3vfLSqw0qSaX2yNquQOW7esWub6c7j3uHYcKE0BAkSs3jHoeL+tFq/smlaIriKmwD7dXeQslUVsFRRJJwgCXV56hERLCr276CmNLvpfksOefcDrd96bE6Z2M6h6fdAd7gA+ba7v6EVYNzgMKtXc37WKte8+B9YjaT1MyaoMcTMh0bhMq4ns/aiSNBcVejnn2kWBjya4Qlb5qfFs7EkoXztLNC5TXuydUZkjW3uRO1Wj+CC4=",
+      "postgresqlUsername": "AgBWNURRky3wiA9HuKhv7gvNWAFg2Yznjm7XUdnsh+92xJjGQIrqkARJF/Q8ehbB3quanPI9hlVfHNgKSNk5S8LViCbTRntLx8mvTHuCNtksNCNWH7Oyqa6WmNqhDMzWj0U4aAj/evkorL8I+gNsMEvQr+BRBByq4S1Ho25cNJIPPjrUCiTx+pZUjNxOXH8Nj6nKU9nJHOgiozTf/qRcLzkRD1m2sJrFmrDlSA7l/HLUqzuTRjcv9ULeear1Iq9dxT/a5LJxS0jjoL1rlZgOCnVhAeEPVVVb/cPFQImXUWvfCXMlX03kZ3bjgYWT7Ss1XNq/cnDDcb/urwkoFzyRkSukv2g+A9oKOXRF5ZyL2QFpPc8TViy3LDd/GjY/GAHK5wIWO/R79dD4zVQceop46fsAit/51OpwTi//ggABRgFzZVhCV7Pi0MhOvFgwoVEsJwKPl1wb1xIYIsHDyjSxZZhmeRPyqcLcGy9n/ThDAkcqFezz44phcH6eDWZ/xR9/XtZOXBuBxI9FfBGeG7tD6kX/6ItsB3SdjQew5/f1RNZKZQ3QRZCh5vAmU8bTNkoUFIWLUu8uOgBIhYLGEuuhVFQ3KSlfoqSuYRhT0lJtA9YlszZutPQB2yEIt1SOclGsV/tviYH12r1BXcZvJblET9KPgRwKIffS1oxaTJEI63yL9rgJ31pTJ+R/TcXgV4beZ1CVDgSTNA=="
+    }
+  }
+}
