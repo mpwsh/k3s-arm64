@@ -11,7 +11,7 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - namespace: gitea-system
+  - namespace: gitea
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: ''
@@ -54,6 +54,8 @@ spec:
     kind: Deployment
   - group: apps
     kind: DaemonSet
+  - group: apps
+    kind: StatefulSet
   - group: networking.k8s.io
     kind: Ingress
   - group: batch

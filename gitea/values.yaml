@@ -141,7 +141,7 @@ ingress:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
     external-dns.alpha.kubernetes.io/ttl: "60"
   hosts:
-    - host: git.example.com
+    - host: git.mpw.sh
       paths:
         - path: /
           pathType: Prefix
@@ -216,7 +216,6 @@ persistence:
   labels: {}
   annotations: {}
   storageClass: longhorn
-  subPath:
 
 ## @param extraVolumes Additional volumes to mount to the Gitea statefulset
 extraVolumes: []
