@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetailor-operator
+  namespace: kubetailor-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubetailor-operator
+  template:
+    metadata:
+      labels:
+        app: kubetailor-operator
+        name: kubetailor-operator
+    spec:
+      containers:
+      - name: kubetailor-operator
+        image: mpwsh/kubetailor-operator:latest

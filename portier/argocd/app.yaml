@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portier
+  namespace: argocd
+spec:
+  project: portier
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: portier
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: portier
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true

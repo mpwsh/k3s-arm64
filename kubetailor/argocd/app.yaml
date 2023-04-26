@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubetailor
+  namespace: argocd
+spec:
+  project: kubetailor
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
+    targetRevision: main
+    path: kubetailor
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kubetailor
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true

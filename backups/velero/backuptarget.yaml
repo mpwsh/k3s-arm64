@@ -1,0 +1,17 @@
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+  labels:
+    component: velero
+  name: default
+  namespace: velero
+spec:
+  config:
+    bucket: vaexeoul7flnktn2myzn
+    prefix: ""
+    region: sfo3
+    s3Url: https://sfo3.digitaloceanspaces.com
+  default: true
+  objectStorage:
+    bucket: vaexeoul7flnktn2myzn
+  provider: velero.io/aws

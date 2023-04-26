@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portier
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portier
+  namespace: portier
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portier
+  template:
+    metadata:
+      labels:
+        app: portier
+        name: portier
+    spec:
+      containers:
+      - name: portier
+        image: portier/broker:v0.8.2
+        args: ["/config.toml"]
+        ports:
+          - name: portier
+            containerPort: 3333
+        volumeMounts:
+          - name: config
+            mountPath: /config.toml
+            subPath: config.toml
+          - name: storage
+            mountPath: /data
+          - name: config
+            mountPath: /config.toml
+            subPath: config.toml
+        env:
+        - name: BROKER_POSTMARK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: postmark-token
+              key: token
+              optional: false
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: portier-pvc
+        - name: config
+          configMap:
+            name: config

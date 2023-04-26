@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: broker
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: mpw.sh
+    external-dns.alpha.kubernetes.io/target: k3s.mpw.sh
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: broker.mpw.sh
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: portier
+                port:
+                  number: 3333
+            path: /
+  tls:
+    - hosts:
+      - broker.mpw.sh
+      secretName: broker-tls
