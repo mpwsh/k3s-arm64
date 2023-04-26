@@ -6,261 +6,263 @@
 ## @param global.imageRegistry global image registry override
 ## @param global.imagePullSecrets global image pull secrets override; can be extended by `imagePullSecrets`
 ## @param global.storageClass global storage class override
-global:
-  imageRegistry: docker.io
-  ## E.g.
-  ## imagePullSecrets:
-  ##   - myRegistryKeySecretName
-  ##
-  imagePullSecrets: []
-  storageClass: longhorn
-
-## @param replicaCount number of replicas for the statefulset
-replicaCount: 1
-
-## @param clusterDomain cluster domain
-clusterDomain: k3s.mpw.sh
-
-## @section Image
-## @param image.registry image registry, e.g. gcr.io,docker.io
-## @param image.repository Image to start for this pod
-## @param image.tag Visit: [Image tag](https://hub.docker.com/r/gitea/gitea/tags?page=1&ordering=last_updated). Defaults to `appVersion` within Chart.yaml.
-## @param image.pullPolicy Image pull policy
-## @param image.rootless Wether or not to pull the rootless version of Gitea, only works on Gitea 1.14.x or higher
-image:
-  registry: docker.io
-  repository: gitea/gitea
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: 1.18-dev-linux-arm64-rootless
-  pullPolicy: Always
-  rootless: false # only possible when running 1.14 or later
-
-## @param imagePullSecrets Secret to use for pulling the image
-imagePullSecrets: []
-
-## @section Security
-# Security context is only usable with rootless image due to image design
-## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
-podSecurityContext:
-  fsGroup: 1000
-
-## @param containerSecurityContext Security context
-containerSecurityContext: {}
-#   allowPrivilegeEscalation: false
-#   capabilities:
-#     drop:
-#       - ALL
-#   # Add the SYS_CHROOT capability for root and rootless images if you intend to
-#   # run pods on nodes that use the container runtime cri-o. Otherwise, you will
-#   # get an error message from the SSH server that it is not possible to read from
-#   # the repository.
-#   # https://gitea.com/gitea/helm-chart/issues/161
-#     add:
-#       - SYS_CHROOT
-#   privileged: false
-#   readOnlyRootFilesystem: true
-#   runAsGroup: 1000
-#   runAsNonRoot: true
-#   runAsUser: 1000
-
-## @depracated The securityContext variable has been split two:
-## - containerSecurityContext
-## - podSecurityContext.
-## @param securityContext Run init and Gitea containers as a specific securityContext
-securityContext: {}
-
-## @section Service
-service:
-  ## @param service.http.type Kubernetes service type for web traffic
-  ## @param service.http.port Port number for web traffic
-  ## @param service.http.clusterIP ClusterIP setting for http autosetup for statefulset is None
-  ## @param service.http.loadBalancerIP LoadBalancer IP setting
-  ## @param service.http.nodePort NodePort for http service
-  ## @param service.http.externalTrafficPolicy If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
-  ## @param service.http.externalIPs External IPs for service
-  ## @param service.http.ipFamilyPolicy HTTP service dual-stack policy
-  ## @param service.http.ipFamilies HTTP service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-  ## @param service.http.loadBalancerSourceRanges Source range filter for http loadbalancer
-  ## @param service.http.annotations HTTP service annotations
-  http:
-    type: ClusterIP
-    port: 3000
-    clusterIP: None
-    loadBalancerIP:
-    nodePort:
-    externalTrafficPolicy:
-    externalIPs:
-    ipFamilyPolicy:
-    ipFamilies:
-    loadBalancerSourceRanges: []
-    annotations: {}
-  ## @param service.ssh.type Kubernetes service type for ssh traffic
-  ## @param service.ssh.port Port number for ssh traffic
-  ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for statefulset is None
-  ## @param service.ssh.loadBalancerIP LoadBalancer IP setting
-  ## @param service.ssh.nodePort NodePort for ssh service
-  ## @param service.ssh.externalTrafficPolicy If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
-  ## @param service.ssh.externalIPs External IPs for service
-  ## @param service.ssh.ipFamilyPolicy SSH service dual-stack policy
-  ## @param service.ssh.ipFamilies SSH service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-  ## @param service.ssh.hostPort HostPort for ssh service
-  ## @param service.ssh.loadBalancerSourceRanges Source range filter for ssh loadbalancer
-  ## @param service.ssh.annotations SSH service annotations
-  ssh:
-    type: ClusterIP
-    port: 22
-    clusterIP: None
-    loadBalancerIP:
-    nodePort:
-    externalTrafficPolicy:
-    externalIPs:
-    ipFamilyPolicy:
-    ipFamilies:
-    hostPort:
-    loadBalancerSourceRanges: []
-    annotations: {}
-
-
-## @section Ingress
-## @param ingress.enabled Enable ingress
-## @param ingress.className Ingress class name
-## @param ingress.annotations Ingress annotations
-## @param ingress.hosts[0].host Default Ingress host
-## @param ingress.hosts[0].paths[0].path Default Ingress path
-## @param ingress.hosts[0].paths[0].pathType Ingress path type
-## @param ingress.tls Ingress tls settings
-## @extra ingress.apiVersion Specify APIVersion of ingress object. Mostly would only be used for argocd.
-ingress:
-  enabled: true
-  # className: nginx
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/hostname: git.mpw.sh
-    external-dns.alpha.kubernetes.io/target: k3s.mpw.sh
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-    external-dns.alpha.kubernetes.io/ttl: "60"
-  hosts:
-    - host: git.mpw.sh
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: gitea-tls
-      hosts:
-        - git.mpw.sh
-  # Mostly for argocd or any other CI that uses `helm template | kubectl apply` or similar
-  # If helm doesn't correctly detect your ingress API version you can set it here.
-  apiVersion: networking.k8s.io/v1
-
-## @section StatefulSet
-#
-## @param resources Kubernetes resources
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-## Use an alternate scheduler, e.g. "stork".
-## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
-##
-## @param schedulerName Use an alternate scheduler, e.g. "stork"
-schedulerName: ""
-
-## @param nodeSelector NodeSelector for the statefulset
-nodeSelector: {}
-
-## @param tolerations Tolerations for the statefulset
-tolerations: []
-
-## @param affinity Affinity for the statefulset
-affinity: {}
-
-## @param dnsConfig dnsConfig for the statefulset
-dnsConfig: {}
-
-## @param statefulset.env  Additional environment variables to pass to containers
-## @param statefulset.terminationGracePeriodSeconds How long to wait until forcefully kill the pod
-## @param statefulset.labels Labels for the statefulset
-## @param statefulset.annotations Annotations for the Gitea StatefulSet to be created
-statefulset:
-  env: []
-    # - name: VARIABLE
-    #   value: my-value
-  terminationGracePeriodSeconds: 60
-  labels: {}
-  annotations: {}
-
-## @section Persistence
-#
-## @param persistence.enabled Enable persistent storage
-## @param persistence.existingClaim Use an existing claim to store repository information
-## @param persistence.size Size for persistence to store repo information
-## @param persistence.accessModes AccessMode for persistence
-## @param persistence.labels Labels for the persistence volume claim to be created
-## @param persistence.annotations Annotations for the persistence volume claim to be created
-## @param persistence.storageClass Name of the storage class to use
-## @param persistence.subPath Subdirectory of the volume to mount at
-persistence:
-  enabled: true
-  size: 40Gi
-  accessModes:
-    - ReadWriteOnce
-  labels: {}
-  annotations: {}
-  storageClass: longhorn
-
-## @param extraVolumes Additional volumes to mount to the Gitea statefulset
-extraVolumes: []
-# - name: postgres-ssl-vol
-#   secret:
-#     secretName: gitea-postgres-ssl
-
-## @param extraContainerVolumeMounts Mounts that are only mapped into the Gitea runtime/main container, to e.g. override custom templates.
-extraContainerVolumeMounts: []
-
-## @param extraInitVolumeMounts Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.
-extraInitVolumeMounts: []
-
-## @depracated The extraVolumeMounts variable has been split two:
-## - extraContainerVolumeMounts
-## - extraInitVolumeMounts
-## As an example, can be used to mount a client cert when connecting to an external Postgres server.
-## @param extraVolumeMounts **DEPRECATED** Additional volume mounts for init containers and the Gitea main container
-extraVolumeMounts: []
-# - name: postgres-ssl-vol
-#   readOnly: true
-#   mountPath: "/pg-ssl"
-
-## @section Init
-## @param initPreScript Bash shell script copied verbatim to the start of the init-container.
-initPreScript: ""
-#
-# initPreScript: |
-#   mkdir -p /data/git/.postgresql
-#   cp /pg-ssl/* /data/git/.postgresql/
-#   chown -R git:git /data/git/.postgresql/
-#   chmod 400 /data/git/.postgresql/postgresql.key
-
-# Configure commit/action signing prerequisites
-## @section Signing
-#
-## @param signing.enabled Enable commit/action signing
-## @param signing.gpgHome GPG home directory
-signing:
-  enabled: false
-  gpgHome: /data/git/.gnupg
 
 ## @section Gitea
 #
 gitea:
+  global:
+    imageRegistry: docker.io
+    ## E.g.
+    ## imagePullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    imagePullSecrets: []
+    storageClass: longhorn
+
+  ## @param replicaCount number of replicas for the statefulset
+  replicaCount: 1
+
+  ## @param clusterDomain cluster domain
+  clusterDomain: k3s.mpw.sh
+
+  ## @section Image
+  ## @param image.registry image registry, e.g. gcr.io,docker.io
+  ## @param image.repository Image to start for this pod
+  ## @param image.tag Visit: [Image tag](https://hub.docker.com/r/gitea/gitea/tags?page=1&ordering=last_updated). Defaults to `appVersion` within Chart.yaml.
+  ## @param image.pullPolicy Image pull policy
+  ## @param image.rootless Wether or not to pull the rootless version of Gitea, only works on Gitea 1.14.x or higher
+  image:
+    registry: docker.io
+    repository: gitea/gitea
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 1.17-dev-linux-arm64
+    pullPolicy: Always
+    rootless: true # only possible when running 1.14 or later
+
+  ## @param imagePullSecrets Secret to use for pulling the image
+  imagePullSecrets: []
+
+  ## @section Security
+  # Security context is only usable with rootless image due to image design
+  ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
+  podSecurityContext:
+    fsGroup: 1000
+
+  ## @param containerSecurityContext Security context
+  containerSecurityContext: {}
+  #   allowPrivilegeEscalation: false
+  #   capabilities:
+  #     drop:
+  #       - ALL
+  #   # Add the SYS_CHROOT capability for root and rootless images if you intend to
+  #   # run pods on nodes that use the container runtime cri-o. Otherwise, you will
+  #   # get an error message from the SSH server that it is not possible to read from
+  #   # the repository.
+  #   # https://gitea.com/gitea/helm-chart/issues/161
+  #     add:
+  #       - SYS_CHROOT
+  #   privileged: false
+  #   readOnlyRootFilesystem: true
+  #   runAsGroup: 1000
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+
+  ## @depracated The securityContext variable has been split two:
+  ## - containerSecurityContext
+  ## - podSecurityContext.
+  ## @param securityContext Run init and Gitea containers as a specific securityContext
+  securityContext: {}
+
+  ## @section Service
+  service:
+    ## @param service.http.type Kubernetes service type for web traffic
+    ## @param service.http.port Port number for web traffic
+    ## @param service.http.clusterIP ClusterIP setting for http autosetup for statefulset is None
+    ## @param service.http.loadBalancerIP LoadBalancer IP setting
+    ## @param service.http.nodePort NodePort for http service
+    ## @param service.http.externalTrafficPolicy If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
+    ## @param service.http.externalIPs External IPs for service
+    ## @param service.http.ipFamilyPolicy HTTP service dual-stack policy
+    ## @param service.http.ipFamilies HTTP service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
+    ## @param service.http.loadBalancerSourceRanges Source range filter for http loadbalancer
+    ## @param service.http.annotations HTTP service annotations
+    http:
+      type: ClusterIP
+      port: 3000
+      clusterIP: None
+      loadBalancerIP:
+      nodePort:
+      externalTrafficPolicy:
+      externalIPs:
+      ipFamilyPolicy:
+      ipFamilies:
+      loadBalancerSourceRanges: []
+      annotations: {}
+    ## @param service.ssh.type Kubernetes service type for ssh traffic
+    ## @param service.ssh.port Port number for ssh traffic
+    ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for statefulset is None
+    ## @param service.ssh.loadBalancerIP LoadBalancer IP setting
+    ## @param service.ssh.nodePort NodePort for ssh service
+    ## @param service.ssh.externalTrafficPolicy If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
+    ## @param service.ssh.externalIPs External IPs for service
+    ## @param service.ssh.ipFamilyPolicy SSH service dual-stack policy
+    ## @param service.ssh.ipFamilies SSH service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
+    ## @param service.ssh.hostPort HostPort for ssh service
+    ## @param service.ssh.loadBalancerSourceRanges Source range filter for ssh loadbalancer
+    ## @param service.ssh.annotations SSH service annotations
+    ssh:
+      type: ClusterIP
+      port: 22
+      clusterIP: None
+      loadBalancerIP:
+      nodePort:
+      externalTrafficPolicy:
+      externalIPs:
+      ipFamilyPolicy:
+      ipFamilies:
+      hostPort:
+      loadBalancerSourceRanges: []
+      annotations: {}
+
+
+  ## @section Ingress
+  ## @param ingress.enabled Enable ingress
+  ## @param ingress.className Ingress class name
+  ## @param ingress.annotations Ingress annotations
+  ## @param ingress.hosts[0].host Default Ingress host
+  ## @param ingress.hosts[0].paths[0].path Default Ingress path
+  ## @param ingress.hosts[0].paths[0].pathType Ingress path type
+  ## @param ingress.tls Ingress tls settings
+  ## @extra ingress.apiVersion Specify APIVersion of ingress object. Mostly would only be used for argocd.
+    # Mostly for argocd or any other CI that uses `helm template | kubectl apply` or similar
+    # If helm doesn't correctly detect your ingress API version you can set it here.
+    apiVersion: networking.k8s.io/v1
+
+  ## @section StatefulSet
+  #
+  ## @param resources Kubernetes resources
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Use an alternate scheduler, e.g. "stork".
+  ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+  ##
+  ## @param schedulerName Use an alternate scheduler, e.g. "stork"
+  schedulerName: ""
+
+  ## @param nodeSelector NodeSelector for the statefulset
+  nodeSelector: {}
+
+  ## @param tolerations Tolerations for the statefulset
+  tolerations: []
+
+  ## @param affinity Affinity for the statefulset
+  affinity: {}
+
+  ## @param dnsConfig dnsConfig for the statefulset
+  dnsConfig: {}
+
+  ## @param statefulset.env  Additional environment variables to pass to containers
+  ## @param statefulset.terminationGracePeriodSeconds How long to wait until forcefully kill the pod
+  ## @param statefulset.labels Labels for the statefulset
+  ## @param statefulset.annotations Annotations for the Gitea StatefulSet to be created
+  statefulset:
+    env: []
+      # - name: VARIABLE
+      #   value: my-value
+    terminationGracePeriodSeconds: 60
+    labels: {}
+    annotations: {}
+
+  ## @section Persistence
+  #
+  ## @param persistence.enabled Enable persistent storage
+  ## @param persistence.existingClaim Use an existing claim to store repository information
+  ## @param persistence.size Size for persistence to store repo information
+  ## @param persistence.accessModes AccessMode for persistence
+  ## @param persistence.labels Labels for the persistence volume claim to be created
+  ## @param persistence.annotations Annotations for the persistence volume claim to be created
+  ## @param persistence.storageClass Name of the storage class to use
+  ## @param persistence.subPath Subdirectory of the volume to mount at
+  persistence:
+    enabled: true
+    size: 40Gi
+    accessModes:
+      - ReadWriteOnce
+    labels: {}
+    annotations: {}
+    storageClass: longhorn
+
+  ## @param extraVolumes Additional volumes to mount to the Gitea statefulset
+  extraVolumes: []
+  # - name: postgres-ssl-vol
+  #   secret:
+  #     secretName: gitea-postgres-ssl
+
+  ## @param extraContainerVolumeMounts Mounts that are only mapped into the Gitea runtime/main container, to e.g. override custom templates.
+  extraContainerVolumeMounts: []
+
+  ## @param extraInitVolumeMounts Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.
+  extraInitVolumeMounts: []
+
+  ## @depracated The extraVolumeMounts variable has been split two:
+  ## - extraContainerVolumeMounts
+  ## - extraInitVolumeMounts
+  ## As an example, can be used to mount a client cert when connecting to an external Postgres server.
+  ## @param extraVolumeMounts **DEPRECATED** Additional volume mounts for init containers and the Gitea main container
+  extraVolumeMounts: []
+  # - name: postgres-ssl-vol
+  #   readOnly: true
+  #   mountPath: "/pg-ssl"
+
+  ## @section Init
+  ## @param initPreScript Bash shell script copied verbatim to the start of the init-container.
+  initPreScript: ""
+  #
+  # initPreScript: |
+  #   mkdir -p /data/git/.postgresql
+  #   cp /pg-ssl/* /data/git/.postgresql/
+  #   chown -R git:git /data/git/.postgresql/
+  #   chmod 400 /data/git/.postgresql/postgresql.key
+
+  # Configure commit/action signing prerequisites
+  ## @section Signing
+  #
+  ## @param signing.enabled Enable commit/action signing
+  ## @param signing.gpgHome GPG home directory
+  signing:
+    enabled: false
+    gpgHome: /data/git/.gnupg
+
+  ingress:
+    enabled: true
+    # className: nginx
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/hostname: git.mpw.sh
+      external-dns.alpha.kubernetes.io/target: k3s.mpw.sh
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/ttl: "60"
+    hosts:
+      - host: git.mpw.sh
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitea-tls
+        hosts:
+          - git.mpw.sh
+
   ## @param gitea.admin.username Username for the Gitea admin user
   ## @param gitea.admin.existingSecret Use an existing secret to store admin user credentials
   ## @param gitea.admin.password Password for the Gitea admin user
@@ -392,87 +394,87 @@ gitea:
     successThreshold: 1
     failureThreshold: 10
 
-## @section Memcached
-#
-## @param memcached.enabled Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
-## @param memcached.service.port Port for Memcached
-memcached:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: arm64v8/memcached
-    tag: alpine3.16
-  service:
-    port: 11211
+  ## @section Memcached
+  #
+  ## @param memcached.enabled Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
+  ## @param memcached.service.port Port for Memcached
+  memcached:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: arm64v8/memcached
+      tag: alpine3.16
+    service:
+      port: 11211
 
-## @section PostgreSQL
-#
-## @param postgresql.enabled Enable PostgreSQL
-## @param postgresql.global.postgresql.postgresqlDatabase PostgreSQL database (overrides postgresqlDatabase)
-## @param postgresql.global.postgresql.postgresqlUsername PostgreSQL username (overrides postgresqlUsername)
-## @param postgresql.global.postgresql.postgresqlPassword PostgreSQL admin password (overrides postgresqlPassword)
-## @param postgresql.global.postgresql.servicePort PostgreSQL port (overrides service.port)
-## @param postgresql.persistence.size PVC Storage Request for PostgreSQL volume
-postgresql:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: arm64v8/postgres
-    tag: 14-bullseye
+  ## @section PostgreSQL
+  #
+  ## @param postgresql.enabled Enable PostgreSQL
+  ## @param postgresql.global.postgresql.postgresqlDatabase PostgreSQL database (overrides postgresqlDatabase)
+  ## @param postgresql.global.postgresql.postgresqlUsername PostgreSQL username (overrides postgresqlUsername)
+  ## @param postgresql.global.postgresql.postgresqlPassword PostgreSQL admin password (overrides postgresqlPassword)
+  ## @param postgresql.global.postgresql.servicePort PostgreSQL port (overrides service.port)
+  ## @param postgresql.persistence.size PVC Storage Request for PostgreSQL volume
+  postgresql:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: arm64v8/postgres
+      tag: 14-bullseye
 
-  global:
-    postgresql:
-      existing_secret: gitea-postgres-creds
-      servicePort: 5432
-  persistence:
-    size: 20Gi
+    global:
+      postgresql:
+        existing_secret: gitea-postgres-creds
+        servicePort: 5432
+    persistence:
+      size: 20Gi
 
-## @section MySQL
-#
-## @param mysql.enabled Enable MySQL
-## @param mysql.root.password Password for the root user. Ignored if existing secret is provided
-## @param mysql.db.user Username of new user to create.
-## @param mysql.db.password Password for the new user.Ignored if existing secret is provided
-## @param mysql.db.name Name for new database to create.
-## @param mysql.service.port Port to connect to MySQL service
-## @param mysql.persistence.size PVC Storage Request for MySQL volume
-mysql:
-  enabled: false
-  root:
-    password: gitea
-  db:
-    user: gitea
-    password: gitea
-    name: gitea
-  service:
-    port: 3306
-  persistence:
-    size: 10Gi
-
-## @section MariaDB
-#
-## @param mariadb.enabled Enable MariaDB
-## @param mariadb.auth.database Name of the database to create.
-## @param mariadb.auth.username Username of the new user to create.
-## @param mariadb.auth.password Password for the new user. Ignored if existing secret is provided
-## @param mariadb.auth.rootPassword Password for the root user.
-## @param mariadb.primary.service.port Port to connect to MariaDB service
-## @param mariadb.primary.persistence.size Persistence size for MariaDB
-mariadb:
-  enabled: false
-  auth:
-    database: gitea
-    username: gitea
-    password: gitea
-    rootPassword: gitea
-  primary:
+  ## @section MySQL
+  #
+  ## @param mysql.enabled Enable MySQL
+  ## @param mysql.root.password Password for the root user. Ignored if existing secret is provided
+  ## @param mysql.db.user Username of new user to create.
+  ## @param mysql.db.password Password for the new user.Ignored if existing secret is provided
+  ## @param mysql.db.name Name for new database to create.
+  ## @param mysql.service.port Port to connect to MySQL service
+  ## @param mysql.persistence.size PVC Storage Request for MySQL volume
+  mysql:
+    enabled: false
+    root:
+      password: gitea
+    db:
+      user: gitea
+      password: gitea
+      name: gitea
     service:
       port: 3306
     persistence:
       size: 10Gi
 
-# By default, removed or moved settings that still remain in a user defined values.yaml will cause Helm to fail running the install/update.
-# Set it to false to skip this basic validation check.
-## @section Advanced
-## @param checkDeprecation Set it to false to skip this basic validation check.
-checkDeprecation: true
+  ## @section MariaDB
+  #
+  ## @param mariadb.enabled Enable MariaDB
+  ## @param mariadb.auth.database Name of the database to create.
+  ## @param mariadb.auth.username Username of the new user to create.
+  ## @param mariadb.auth.password Password for the new user. Ignored if existing secret is provided
+  ## @param mariadb.auth.rootPassword Password for the root user.
+  ## @param mariadb.primary.service.port Port to connect to MariaDB service
+  ## @param mariadb.primary.persistence.size Persistence size for MariaDB
+  mariadb:
+    enabled: false
+    auth:
+      database: gitea
+      username: gitea
+      password: gitea
+      rootPassword: gitea
+    primary:
+      service:
+        port: 3306
+      persistence:
+        size: 10Gi
+
+  # By default, removed or moved settings that still remain in a user defined values.yaml will cause Helm to fail running the install/update.
+  # Set it to false to skip this basic validation check.
+  ## @section Advanced
+  ## @param checkDeprecation Set it to false to skip this basic validation check.
+  checkDeprecation: true
