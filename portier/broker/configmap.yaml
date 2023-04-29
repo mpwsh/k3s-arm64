@@ -100,7 +100,7 @@ data:
     # Setting `redis_url` enables Redis storage. Please also read:
     # https://github.com/portier/portier-broker/blob/main/docs/storage/redis.md
 
-    redis_url = "redis://redis-server.redis.svc/0"
+    redis_url = "redis://redis-server.portier.svc/0"
 
     # Setting `memory_storage` enables in-memory storage. This should only be used
     # for local testing.
