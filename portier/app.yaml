@@ -11,7 +11,7 @@ spec:
     directory:
       recurse: true
       jsonnet: {}
-      exclude: '{argocd/app.yaml, argocd/project.yaml}'
+      exclude: '{app.yaml, project.yaml}'
     path: portier
   destination:
     server: https://kubernetes.default.svc
