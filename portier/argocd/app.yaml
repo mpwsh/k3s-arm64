@@ -11,12 +11,15 @@ spec:
     directory:
       recurse: true
       jsonnet: {}
-      exclude: '{argocd}'
+      exclude: '{argocd/app.yaml, argocd/project.yaml}'
     path: portier
   destination:
     server: https://kubernetes.default.svc
     namespace: portier
-syncPolicy:
-  automated:
-    prune: true
-    selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true

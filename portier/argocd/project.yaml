@@ -45,6 +45,8 @@ spec:
     kind: CronJob
   - group: ''
     kind: PersistentVolumeClaim
+  - group: bitnami.com
+    kind: SealedSecret
 
 
   roles:
