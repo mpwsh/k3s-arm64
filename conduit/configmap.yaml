@@ -39,7 +39,7 @@ data:
     max_request_size = 100_000_000 # in bytes
 
     # Enables registration. If set to false, no users can register on this server.
-    allow_registration = true
+    allow_registration = false
 
     allow_federation = true
 
