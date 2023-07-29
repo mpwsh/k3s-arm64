@@ -1,0 +1,11 @@
+github-runners:
+  organization: mpwsh
+  runners:
+  - name: kubetailor
+    repository: kubetailor
+    architectures:
+      - arm64
+      - amd64
+    replicas:
+      min: 1
+      max: 5

@@ -1,0 +1,29 @@
+actions-runner-controller:
+  syncPeriod: 1m
+  defaultScaleDownDelay: 10m
+  enableLeaderElection: true
+  certManagerEnabled: true
+
+  authSecret:
+    enabled: true
+    create: false
+    name: controller-manager
+    github_token: controller-manager
+
+  image:
+    repository: summerwind/actions-runner-controller
+    actionsRunnerRepositoryAndTag: summerwind/actions-runner:latest
+    dindSidecarRepositoryAndTag: docker:dind
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+
+  metrics:
+    serviceMonitor: true
+    port: 8443
+    proxy:
+      enabled: true
+      image:
+        repository: quay.io/brancz/kube-rbac-proxy
+        tag: v0.12.0

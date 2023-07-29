@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: github-actions-runners
+  namespace: argocd
+spec:
+  project: hub-infra
+  source:
+    repoURL: https://github.com/mpwsh/k3s-arm.git
+    path: github-actions/runners
+    targetRevision: HEAD
+    helm:
+      releaseName: github-runners
+      valueFiles:
+      - values.yaml
+  destination:
+    name: in-cluster
+    namespace: actions-runner-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - Replace=true
