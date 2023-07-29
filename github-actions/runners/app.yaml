@@ -4,9 +4,9 @@ metadata:
   name: github-actions-runners
   namespace: argocd
 spec:
-  project: hub-infra
+  project: github-actions
   source:
-    repoURL: https://github.com/mpwsh/k3s-arm.git
+    repoURL: https://github.com/mpwsh/k3s-arm64.git
     path: github-actions/runners
     targetRevision: HEAD
     helm:
