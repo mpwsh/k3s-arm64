@@ -14,8 +14,8 @@ spec:
     namespace: portier
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - Validate=true
       - CreateNamespace=true

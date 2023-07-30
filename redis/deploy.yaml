@@ -31,3 +31,16 @@ spec:
         - name: lv-storage
           persistentVolumeClaim:
             claimName: redis-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 5Gi

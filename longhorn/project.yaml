@@ -38,6 +38,8 @@ spec:
   - group: ''
     kind: NetworkPolicy
   namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
   - group: ''
     kind: ConfigMap
   - group: ''

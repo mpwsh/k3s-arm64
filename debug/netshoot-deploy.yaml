@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: test-netshoot
+  name: test-netshoot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-netshoot
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: test-netshoot
+    spec:
+      containers:
+      - image: docker.io/nicolaka/netshoot:latest
+        name: netshoot
+        command: ["sleep", "infinity"]
+        ports:
+        - containerPort: 3333
+          name: broker
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netshoot-svc
+  labels:
+    app: test-netshoot
+spec:
+  selector:
+    app: test-netshoot
+  type: ClusterIP
+  ports:
+    - name: broker
+      protocol: TCP
+      port: 3333
+      targetPort: 3333

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-reloader
+  namespace: argocd
+spec:
+  project: prod-tooling
+  source:
+    chart: reloader
+    repoURL: https://stakater.github.io/stakater-charts
+    targetRevision: 0.0.118
+    helm:
+      releaseName: reloader
+      parameters:
+      - name: namespace
+        value: tooling
+  destination:
+    name: "mpwsh"
+    namespace: tooling
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
