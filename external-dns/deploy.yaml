@@ -34,47 +34,46 @@ subjects:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: external-dns
   annotations:
     reloader.stakater.com/auto: "true"
+  name: external-dns
+  namespace: external-dns
 spec:
-  strategy:
-    type: Recreate
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: external-dns
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: external-dns
     spec:
-      serviceAccountName: external-dns
       containers:
-      - name: external-dns
-        image: registry.k8s.io/external-dns/external-dns:v0.13.4
-        args:
+      - args:
         - --source=ingress
-        - --domain-filter=mpw.sh # (optional) limit to only example.com domains; change to match the zone created above.
-        #- --zone-id-filter=YOUR_ZONE_ID # (optional) limit to a specific zone.
+        - --domain-filter=mpw.sh
         - --provider=cloudflare
-        #- --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)
+        - --registry=txt
+        - --txt-owner-id=operator
         env:
         - name: CF_API_TOKEN
           valueFrom:
             secretKeyRef:
-              name: cloudflare-creds
               key: token
+              name: cloudflare-creds
               optional: true
-        #Use API_KEY in combination with CF_API_EMAIL, or use CF_API_TOKEN instead
-        #- name: CF_API_EMAIL
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: cloudflare-creds
-        #     key: email
-        #     optional: true
-        #- name: CF_API_KEY
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: cloudflare-creds
-        #     key: key
-        #     optional: true
+        image: registry.k8s.io/external-dns/external-dns:v0.13.5
+        imagePullPolicy: IfNotPresent
+        name: external-dns
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccount: external-dns
+      serviceAccountName: external-dns
+      terminationGracePeriodSeconds: 30
