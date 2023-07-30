@@ -5,6 +5,10 @@ github-runners:
     repository: kubetailor
     architectures:
       - amd64
+    extraSpecs:
+      dockerMTU: 1400
+    extraTolerations: []
+    extraConstraints: []
     replicas:
       min: 1
       max: 5
