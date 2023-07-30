@@ -13,6 +13,8 @@ spec:
   destinations:
   - namespace: actions-runner-system
     server: https://kubernetes.default.svc
+  - namespace: actions-runner-system
+    server: mpwsh
   clusterResourceWhitelist:
   - group: ''
     kind: Namespace

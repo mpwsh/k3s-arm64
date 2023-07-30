@@ -1,0 +1,31 @@
+github-runners:
+  organization: mpwsh
+  runners:
+  - name: kubetailor
+    repository: kubetailor
+    architectures:
+      - amd64
+    replicas:
+      min: 0
+      max: 5
+  - name: smol-kv
+    repository: smol-kv
+    architectures:
+      - amd64
+    replicas:
+      min: 0
+      max: 5
+  - name: byteme
+    repository: smol-kv
+    architectures:
+      - amd64
+    replicas:
+      min: 0
+      max: 5
+  - name: exchange-observer
+    repository: exchange-observer
+    architectures:
+      - amd64
+    replicas:
+      min: 0
+      max: 5

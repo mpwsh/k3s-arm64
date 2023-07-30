@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: github-actions-runners
+  name: prod-github-actions-runners
   namespace: argocd
 spec:
   project: github-actions
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
-    path: github-actions/runners
+    path: github-actions/prod/runners
     targetRevision: HEAD
     helm:
       releaseName: github-runners
       valueFiles:
       - values.yaml
   destination:
-    name: in-cluster
+    name: mpwsh
     namespace: actions-runner-system
   syncPolicy:
     automated:

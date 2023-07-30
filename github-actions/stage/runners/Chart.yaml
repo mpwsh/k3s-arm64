@@ -1,0 +1,8 @@
+apiVersion: v2
+name: github-runners
+type: application
+version: 0.1.1
+dependencies:
+  - name: github-runners
+    version: 0.1.1
+    repository: https://charts.holaplex.com

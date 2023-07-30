@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: actions-runner-controller
+  name: github-actions-runners
   namespace: argocd
 spec:
   project: github-actions
   source:
     repoURL: https://github.com/mpwsh/k3s-arm64.git
-    path: github-actions/controller
+    path: github-actions/stage/runners
     targetRevision: HEAD
     helm:
-      releaseName: actions-runner-controller
+      releaseName: github-runners
       valueFiles:
       - values.yaml
   destination:
