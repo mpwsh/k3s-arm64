@@ -7,5 +7,29 @@ github-runners:
       - arm64
       - amd64
     replicas:
-      min: 1
+      min: 0
+      max: 5
+  - name: smol-kv
+    repository: smol-kv
+    architectures:
+      - arm64
+      - amd64
+    replicas:
+      min: 0
+      max: 5
+  - name: byteme
+    repository: smol-kv
+    architectures:
+      - arm64
+      - amd64
+    replicas:
+      min: 0
+      max: 5
+  - name: exchange-observer
+    repository: exchange-observer
+    architectures:
+      - arm64
+      - amd64
+    replicas:
+      min: 0
       max: 5
