@@ -20,7 +20,7 @@ actions-runner-controller:
     create: true
 
   metrics:
-    serviceMonitor: true
+    serviceMonitor: false
     port: 8443
     proxy:
       enabled: true
