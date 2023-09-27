@@ -2,7 +2,7 @@ vaultwarden:
   image:
     repository: vaultwarden/server
     pullPolicy: IfNotPresent
-    tag: 1.29.1
+    tag: 1.29.2
   env:
     DATA_FOLDER: config
   ingress:
