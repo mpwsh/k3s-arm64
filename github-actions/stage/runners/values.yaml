@@ -5,6 +5,7 @@ github-runners:
     repository: kubetailor
     architectures:
       - amd64
+      - arm64
     extraSpecs:
       dockerMTU: 1400
     extraTolerations: []
@@ -18,6 +19,7 @@ github-runners:
       dockerMTU: 1400
     architectures:
       - amd64
+      - arm64
     replicas:
       min: 1
       max: 5
@@ -25,6 +27,7 @@ github-runners:
     repository: byteme
     architectures:
       - amd64
+      - arm64
     replicas:
       min: 0
       max: 5
@@ -32,6 +35,7 @@ github-runners:
     repository: exchange-observer
     architectures:
       - amd64
+      - arm64
     replicas:
       min: 0
       max: 5
