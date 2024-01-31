@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: splash-server
+  namespace: splash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: splash-server
+  template:
+    metadata:
+      labels:
+        app: splash-server
+        name: splash-server
+    spec:
+      containers:
+        - name: splash-server
+          image: mpwsh/splash:0.0.4
+          args:
+            [
+              "--listen-offer-submission",
+              "0.0.0.0:4000",
+              "--listen-address",
+              "/ip4/0.0.0.0/tcp/11511",
+              "--offer-hook",
+              "http://backend.swapx.svc:3030/v1/upload",
+            ]
+          ports:
+            - name: splash-api
+              containerPort: 4000
+            - name: splash-p2p
+              containerPort: 11511
