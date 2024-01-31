@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smol-kv
+  namespace: smol-kv
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: smol-kv
+  template:
+    metadata:
+      labels:
+        app: smol-kv
+        name: smol-kv
+    spec:
+      containers:
+        - name: smol-kv
+          image: mpwsh/smol-kv:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 5050
+          volumeMounts:
+            - name: storage
+              mountPath: /rocksdb
+          env:
+            - name: LOG_LEVEL
+              value: info
+            - name: DATABASE_PATH
+              value: /rocksdb
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: smol-kv-pvc
