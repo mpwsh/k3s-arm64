@@ -4,7 +4,7 @@ secrets:
   name: minio-env-configuration
   # MinIO root user and password
   accessKey: minio
-  secretKey: 8exJODES2QJPPsXwNW2QJPPsXwNW2F
+  secretKey: <your-token>
   ## Set the value for existingSecret to use a pre created secret and dont create default one
   # existingSecret: random-env-configuration
 ## MinIO Tenant Definition
