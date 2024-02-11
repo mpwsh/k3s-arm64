@@ -1,37 +1,44 @@
 github-runners:
   organization: mpwsh
   runners:
-  - name: kubetailor
-    repository: kubetailor
-    architectures:
-      - arm64
-    extraSpecs:
-      dockerMTU: 1400
-    extraTolerations: []
-    extraConstraints: []
-    replicas:
-      min: 1
-      max: 5
-  - name: smol-kv
-    repository: smol-kv
-    architectures:
-      - arm64
-    extraSpecs:
-      dockerMTU: 1400
-    replicas:
-      min: 1
-      max: 5
-  - name: byteme
-    repository: byteme
-    architectures:
-      - arm64
-    replicas:
-      min: 0
-      max: 5
-  - name: exchange-observer
-    repository: exchange-observer
-    architectures:
-      - arm64
-    replicas:
-      min: 0
-      max: 5
+    - name: kubetailor
+      repository: kubetailor
+      architectures:
+        - arm64
+      extraSpecs:
+        dockerMTU: 1400
+      extraTolerations: []
+      extraConstraints: []
+      replicas:
+        min: 1
+        max: 5
+    - name: smol-kv
+      repository: smol-kv
+      architectures:
+        - arm64
+      extraSpecs:
+        dockerMTU: 1400
+      replicas:
+        min: 1
+        max: 5
+    - name: byteme
+      repository: byteme
+      architectures:
+        - arm64
+      replicas:
+        min: 0
+        max: 5
+    - name: exchange-observer
+      repository: exchange-observer
+      architectures:
+        - arm64
+      replicas:
+        min: 0
+        max: 5
+    - name: actix-portier
+      repository: actix-portier
+      architectures:
+        - arm64
+      replicas:
+        min: 0
+        max: 5

@@ -12,9 +12,9 @@ spec:
     helm:
       releaseName: actions-runner-controller
       valueFiles:
-      - values.yaml
+        - values.yaml
   destination:
-    name: mpwsh
+    name: kubetailor
     namespace: actions-runner-system
   syncPolicy:
     automated:
