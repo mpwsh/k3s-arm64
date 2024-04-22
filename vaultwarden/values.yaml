@@ -2,7 +2,7 @@ vaultwarden:
   image:
     repository: vaultwarden/server
     pullPolicy: IfNotPresent
-    tag: 1.29.2
+    tag: 1.30.5
   env:
     DATA_FOLDER: config
   ingress:
@@ -16,24 +16,24 @@ vaultwarden:
         external-dns.alpha.kubernetes.io/ttl: "60"
       ingressClassName: nginx
       tls:
-      - secretName: vaultwarden-tls
-        hosts:
-          - bw.mpw.sh
+        - secretName: vaultwarden-tls
+          hosts:
+            - bw.mpw.sh
       hosts:
-      - host: bw.mpw.sh
-        paths:
-        - path: /
-          pathType: Prefix
-          service:
-            port: 80
-        - path: /notifications/hub/negotiate
-          pathType: Prefix
-          service:
-            port: 80
-        - path: /notifications/hub
-          pathType: Prefix
-          service:
-            port: 3012
+        - host: bw.mpw.sh
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                port: 80
+            - path: /notifications/hub/negotiate
+              pathType: Prefix
+              service:
+                port: 80
+            - path: /notifications/hub
+              pathType: Prefix
+              service:
+                port: 3012
   persistence:
     config:
       enabled: true
@@ -45,7 +45,7 @@ vaultwarden:
       tag: 14-bullseye
     persistence:
       accessModes:
-      - ReadWriteOnce
+        - ReadWriteOnce
       enabled: true
       storageClass: null
     auth:

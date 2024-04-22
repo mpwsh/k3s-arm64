@@ -1,0 +1,35 @@
+name: Remote image tag update
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to update"
+        required: true
+      commit_hash:
+        description: "Commit hash to set on image.tag"
+        required: true
+
+jobs:
+  build:
+    name: Updating ${{ github.event.inputs.service }} container image tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Update deployments image tag
+        env:
+          commit_hash: ${{ github.event.inputs.commit_hash }}
+          environment: ${{ github.event.inputs.environment }}
+          service: ${{ github.event.inputs.service }}
+        run: |
+          sed -i "s/tag: [0-9a-f]\{40\}/tag: $commit_hash/g" $service/values.yaml
+
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.ACTIONS_TOKEN}}
+          commit_message: Updated ${{ github.event.inputs.service }} container image tag
