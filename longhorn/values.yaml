@@ -1,4 +1,66 @@
 longhorn:
+  # Default values for longhorn.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+  global:
+    cattle:
+      # -- Default system registry.
+      systemDefaultRegistry: ""
+      windowsCluster:
+        # -- Setting that allows Longhorn to run on a Rancher Windows cluster.
+        enabled: false
+        # -- Toleration for Linux nodes that can run user-deployed Longhorn components.
+        tolerations:
+          - key: "cattle.io/os"
+            value: "linux"
+            effect: "NoSchedule"
+            operator: "Equal"
+        # -- Node selector for Linux nodes that can run user-deployed Longhorn components.
+        nodeSelector:
+          kubernetes.io/os: "linux"
+        defaultSetting:
+          # -- Toleration for system-managed Longhorn components.
+          taintToleration: cattle.io/os=linux:NoSchedule
+          # -- Node selector for system-managed Longhorn components.
+          systemManagedComponentsNodeSelector: kubernetes.io/os:linux
+
+  networkPolicies:
+    # -- Setting that allows you to enable network policies that control access to Longhorn pods.
+    enabled: false
+    # -- Distribution that determines the policy for allowing access for an ingress. (Options: "k3s", "rke2", "rke1")
+    type: "k3s"
+
+  image:
+    longhorn:
+      engine:
+        tag: v1.6.2
+      manager:
+        tag: v1.6.2
+      ui:
+        tag: v1.6.2
+      instanceManager:
+        tag: v1.6.2
+      shareManager:
+        tag: v1.6.2
+      backingImageManager:
+        tag: v1.6.2
+      supportBundleKit:
+        tag: v0.0.37
+    csi:
+      attacher:
+        tag: v4.5.1
+      provisioner:
+        tag: v3.6.4
+      nodeDriverRegistrar:
+        tag: v2.9.2
+      resizer:
+        tag: v1.10.1
+      snapshotter:
+        tag: v6.3.4
+      livenessProbe:
+        tag: v2.12.0
+    pullPolicy: IfNotPresent
+
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -30,4 +92,4 @@ longhorn:
       external-dns.alpha.kubernetes.io/ttl: "60"
       nginx.ingress.kubernetes.io/auth-type: basic
       nginx.ingress.kubernetes.io/auth-secret: basic-auth
-      nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
