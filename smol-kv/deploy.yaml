@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: smol-kv
-          image: mpwsh/smol-kv:latest
+          image: mpwsh/smol-kv:2.3
           imagePullPolicy: Always
           ports:
             - name: http
